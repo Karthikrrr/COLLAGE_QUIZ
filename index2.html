@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Quiz</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <style>
+         h1.quiz-heading {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 36px;
+        color: white;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        z-index: 10;
+    }
+
+        /* Styling remains the same */
+        body {
+            font-family: Arial, sans-serif;
+            background: url('/haker2.gif') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: black;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 90%;
+            max-width: 1400px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .quiz-box {
+            width: 45%;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .girls {
+            background-color: #ffe6e6;
+        }
+
+        .boys {
+            background-color: #d5e6ff;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+            width: 80%;
+            text-align: left;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .option {
+            display: block;
+            margin: 10px auto;
+        }
+
+        #submit-girls,
+        #submit-boys {
+            text-align: center;
+            background-color: #007BFF;
+            padding: 15px 20px;
+            width: 50%;
+            margin: 20px auto;
+            font-size: 20px;
+        }
+
+        #submit-girls:hover,
+        #submit-boys:hover {
+            background-color: #0056b3;
+        }
+
+        .animate {
+            animation: pulse 1s ease-out;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="quiz-heading"><ul>MIT 'A' Section Quiz Competition</ul></h1>
+    <div class="container" data-aos="fade-up">
+        <!-- Girls' Quiz Section -->
+        <div class="quiz-box girls" data-aos="fade-right">
+            <h1 style="color: blue;">Quiz for Girls</h1>
+            <div id="quiz-girls">
+                <h1 id="question-girls">Question will appear here...</h1>
+                <button class="option" onclick="selectOption('girls', 'a')">a. Option A</button>
+                <button class="option" onclick="selectOption('girls', 'b')">b. Option B</button>
+                <button class="option" onclick="selectOption('girls', 'c')">c. Option C</button>
+                <button class="option" onclick="selectOption('girls', 'd')">d. Option D</button>
+                <button id="submit-girls" onclick="submitAnswer('girls')">Submit</button>
+            </div>
+        </div>
+        <!-- Boys' Quiz Section -->
+        <div class="quiz-box boys" data-aos="fade-left">
+            <h1 style="color: blue;">Quiz for Boys</h1>
+            <div id="quiz-boys">
+                <h1 id="question-boys">Question will appear here...</h1>
+                <button class="option" onclick="selectOption('boys', 'a')">a. Option A</button>
+                <button class="option" onclick="selectOption('boys', 'b')">b. Option B</button>
+                <button class="option" onclick="selectOption('boys', 'c')">c. Option C</button>
+                <button class="option" onclick="selectOption('boys', 'd')">d. Option D</button>
+                <button id="submit-boys" onclick="submitAnswer('boys')">Submit</button>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+   <script>
+        AOS.init();
+        let currentQuestionIndex = { girls: 0, boys: 0 };
+        let scores = { girls: 0, boys: 0 };
+        let selectedOption = { girls: null, boys: null };
+
+        const questions = {
+            girls: [
+                { question: "Embedded computers in home devices and automobiles are designed to: ", options: { a: "Perform complex computing tasks", b: "Operate with minimal or no user intervention", c: "Allow users to install software", d: "Be used as personal computers" }, answer: "b" },
+                { question: "The operating system is often called a resource allocator because:", options: { a: "It ensures fair and efficient use of CPU, memory, and I/O devices ", b: "It helps the user run applications", c: "It is responsible for creating application programs", d: "It connects the computer to the internet" }, answer: "a" },
+                { question: "Where is the bootstrap program typically stored?", options: { a: "In the hard disk", b: "In the RAM", c: "In the ROM or EEPROM", d: "In the CPU cache" }, answer: "c" },
+                { question: "What technique is used to reduce overhead in bulk data transfer operations like disk I/O?", options: { a: " Interrupt-driven I/O", b: "Direct Memory Access (DMA)", c: "Virtual Memory Management", d: "Manual Data Transfer" }, answer: "b" },
+                { question: "What is required for a time-sharing system to function effectively?", options: { a: "A batch processing system", b: "An interactive computer system with direct user communication", c: "A single-user operating system", d: "A CPU with no scheduling mechanism" }, answer: "b" },
+                { question: "What is the main cause of a trap?", options: { a: "A hardware failure", b: "An operating system update", c: "An error or a specific request from a user program", d: "A CPU overheating issue" }, answer: "c" },
+                { question: "What are the essential resources required by a process?", options: { a: "CPU time, memory, files, and I/O devices", b: "Only CPU and memory", c: "Network and database access", d: "Only storage and user input" }, answer: "a" },
+                { question: "What is the role of memory management in an operating system?", options: { a: "To keep track of memory usage and allocation", b: "To execute all processes in parallel", c: "To eliminate the need for secondary storage", d: "To allow only one process to run at a time" }, answer: "a" },
+                { question: "Which of the following is an example of tertiary storage?", options: { a: "SSD", b: "RAM", c: "Magnetic tape", d: "CPU cache" }, answer: "c" },
+                { question: "What mechanism is used to prevent unauthorized access in an OS?", options: { a: "Authentication", b: "Defragmentation", c: "Multithreading", d: "Paging" }, answer: "a" },
+                { question: "Which memory management technique restricts a process to execute within its own allocated memory space?", options: { a: "Paging", b: "Segmentation", c: "Contiguous Memory Allocation", d: "Virtual Memory" }, answer: "c" },
+                { question: "What is the most common network protocol used in distributed systems?", options: { a: "HTTP", b: "FTP", c: "TCP/IP", d: "Bluetooth" }, answer: "c" },
+                { question: "Which of the following multimedia applications involves streaming of audio and video content?", options: { a: "Text document creation", b: "Video conferencing and DVD movies", c: "Spreadsheet analysis", d: "Database management" }, answer: "b" },
+                { question: "What did time-sharing systems in traditional computing use to allocate CPU time to processes?", options: { a: "Fixed time slots", b: "Scheduling algorithms and timers", c: "Manual allocation by the system administrator", d: "Random allocation of CPU time" }, answer: "b" },
+                { question: "What type of system program would you use to modify the content of a text file?", options: { a: "Compiler", b: "Debugger", c: "Text editor", d: "Loader" }, answer: "c" },
+            ],
+            boys: [
+                { question: "The operating system acts as an intermediary between: ", options: { a: "Users and application programs ", b: "Application programs and hardware", c: "Users and computer hardware", d: "All of the above" }, answer: "d" },
+                { question: "The fundamental goal of an operating system is to:", options: { a: "Execute user programs efficiently", b: "Make computing more complex", c: "Replace application software", d: "Convert software into hardware" }, answer: "a" },
+                { question: "What is the purpose of a memory controller in a computer system?", options: { a: "To increase the CPU speed", b: "To manage and synchronize access to shared memory", c: "To store the operating system permanently", d: "To execute application programs" }, answer: "b" },
+                { question: "How is memory organized in a computer system?", options: { a: "In a hierarchy based on speed and cost", b: "In a single-level storage system", c: "By using only one type of storage device", d: "Randomly distributed across all storage devices" }, answer: "a" },
+                { question: "What is the main advantage of multiprogramming?", options: { a: "It increases system boot time", b: "It allows multiple users to work on a single CPU simultaneously", c: "It increases CPU utilization by ensuring the CPU always has a job to execute", d: "It prevents the execution of multiple processes at the same time" }, answer: "c" },
+                { question: "What is a trap in an operating system?", options: { a: "A hardware-generated interrupt", b: "A type of software-generated interrupt", c: "A mechanism for terminating user programs", d: "A way to switch from user mode to kernel mode manually" }, answer: "b" },
+                { question: "What is a process in an operating system?", options: { a: "A program stored on disk", b: "A set of system calls", c: "A program in execution", d: "A background service" }, answer: "c" },
+                { question: "How does the CPU interact with main memory?", options: { a: "The CPU reads instructions and data from main memory", b: "The CPU writes all data to secondary storage first", c: "The CPU does not require main memory to execute instructions", d: "The CPU only reads from main memory but never writes to it" }, answer: "a" },
+                { question: "Which of the following is NOT a function of file-system management?", options: { a: "Creating and deleting files", b: "Allocating CPU resources", c: "Mapping files onto secondary storage", d: "Mapping files onto secondary storage" }, answer: "b" },
+                { question: "What is an example of a security attack on an operating system?", options: { a: "Multiprocessing", b: "Virtual memory management", c: "Denial-of-service (DoS) attack", d: "Deadlock prevention" }, answer: "c" },
+                { question: "Which data structure is used by the operating system to track allocated and free memory blocks?", options: { a: "Page Table", b: "Linked List", c: "Stack", d: "Hash Table" }, answer: "a" },
+                { question: "Which of the following networks connects systems across cities or countries?", options: { a: "LAN", b: "MAN", c: "WAN", d: "PAN" }, answer: "c" },
+                { question: "n which of the following systems is real-time processing most crucial?", options: { a: "Video streaming applications", b: "Industrial control systems", c: "Word-processing software", d: "Web browsing" }, answer: "b" },
+                { question: "Which type of server provides an interface to execute actions and send back results, such as a database server?", options: { a: "File server", b: "Compute server", c: "Peer-to-peer server", d: "Web server" }, answer: "b" },
+                { question: "Which system program is responsible for loading programs into memory for execution?", options: { a: "File editor", b: "Linkage editor", c: "Program loader", d: "Text processor" }, answer: "c" },
+            ]
+        };
+
+
+        function loadQuestion(category) {
+            const currentQuestion = questions[category][currentQuestionIndex[category]];
+            document.getElementById(`question-${category}`).textContent = currentQuestion.question;
+            document.querySelectorAll(`#quiz-${category} .option`).forEach((btn, index) => {
+                const optionKey = ['a', 'b', 'c', 'd'][index];
+                btn.textContent = `${optionKey}. ${currentQuestion.options[optionKey]}`;
+                btn.setAttribute('data-answer', optionKey);
+                btn.style.backgroundColor = '';
+                btn.disabled = false;
+            });
+            selectedOption[category] = null;
+        }
+
+        function selectOption(category, option) {
+            selectedOption[category] = option;
+            document.querySelectorAll(`#quiz-${category} .option`).forEach((btn) => {
+                btn.style.backgroundColor = btn.getAttribute('data-answer') === option ? '#ddd' : '';
+            });
+        }
+
+        function submitAnswer(category) {
+            if (!selectedOption[category]) {
+                alert("Please select an option!");
+                return;
+            }
+
+            const correctAnswer = questions[category][currentQuestionIndex[category]].answer;
+            const buttons = document.querySelectorAll(`#quiz-${category} .option`);
+
+            buttons.forEach((btn) => {
+                btn.disabled = true;
+                if (btn.getAttribute('data-answer') === correctAnswer) {
+                    btn.style.backgroundColor = '#006400';
+                } else if (btn.getAttribute('data-answer') === selectedOption[category] && selectedOption[category] !== correctAnswer) {
+                    btn.style.backgroundColor = 'red';
+                }
+            });
+
+            const quizBox = document.querySelector(`.quiz-box.${category}`);
+            quizBox.classList.add('animate');
+            setTimeout(() => {
+                quizBox.classList.remove('animate');
+            }, 3000);
+            if (selectedOption[category] === correctAnswer) {
+                scores[category]++;
+            }
+
+            currentQuestionIndex[category]++;
+            if (currentQuestionIndex[category] < questions[category].length) {
+                setTimeout(() => loadQuestion(category), 1000);
+            } else {
+                checkFinish();
+            }
+        }
+
+        function checkFinish() {
+            if (currentQuestionIndex.girls >= questions.girls.length &&
+                currentQuestionIndex.boys >= questions.boys.length) {
+                localStorage.setItem("girlsScore", scores.girls);
+                localStorage.setItem("boysScore", scores.boys);
+                window.location.href = "results.html";
+            }
+        }
+
+        loadQuestion('girls');
+        loadQuestion('boys');
+    </script>
+</body>
+
+</html>
